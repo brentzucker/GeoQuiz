@@ -10,7 +10,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- Questions-->
-    <string name="question_oceans">The Pacific Ocean is larger thanthe Atlantic Ocean.</string>
+    <string name="question_oceans">The Pacific Ocean is larger than the Atlantic Ocean.</string>
     <string name="question_mideast">The Suez Canal connects the Red Sea and the Indian Ocean.</string>
     <string name ="question_africa">The source of the Nile River is in Egypt.</string>
     <string name ="question_americas">The Amazon River is the longest river in the Americas.</string>
