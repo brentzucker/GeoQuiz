@@ -17,6 +17,7 @@ import android.widget.Toast;
 public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
+    private static final String IS_KEY_INDEX_CHEATER = "is_key_index_cheater";
     private static final String IS_CHEATER = "is_cheater";
     private static final String KEY_INDEX = "index";
     private static final int REQUEST_CODE_CHEAT = 0;
@@ -38,6 +39,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private int mCurrentIndex = 0;
     private boolean mIsCheater;
+    private boolean[] mIsCheaterIndexArray = new boolean[mQuestionBank.length];
 
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
@@ -137,6 +139,7 @@ public class QuizActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
             mIsCheater = savedInstanceState.getBoolean(IS_CHEATER);
+            mIsCheaterIndexArray = savedInstanceState.getBooleanArray(IS_KEY_INDEX_CHEATER);
         }
 
         updateQuestion();
@@ -152,6 +155,18 @@ public class QuizActivity extends AppCompatActivity {
                 return;
             }
             mIsCheater = CheatActivity.wasAnswerShown(data);
+
+            // Only update mIsCheaterIndexArray if mIsCheater is true.
+            if (mIsCheater) {
+                mIsCheaterIndexArray[mCurrentIndex % mQuestionBank.length] = true;
+            }
+
+            Log.i(TAG, "mIsCheaterIndexArray[mCurrentIndex % mQuestionBank.length] " + mIsCheaterIndexArray[mCurrentIndex % mQuestionBank.length]);
+
+            // If a user tries to press next until the question they cheated on comes back around
+            if (!mIsCheater && mIsCheaterIndexArray[mCurrentIndex % mQuestionBank.length]) {
+                mIsCheater = true;
+            }
         }
     }
 
